@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <!--The viewport meta tag is used to improve the presentation and behavior of the samples
+      on iOS devices-->
+    <meta name="viewport" content="initial-scale=1, maximum-scale=1,user-scalable=no">
+    <title>启用或者禁用弹窗</title>
+    <link rel="stylesheet" href="//js.arcgis.com/3.11/dijit/themes/claro/claro.css">
+    <link rel="stylesheet" href="//js.arcgis.com/3.11/esri/css/esri.css">
+    <style>
+    html,
+    body,
+    #mapDiv {
+        padding: 0;
+        margin: 0;
+        height: 100%;
+    }
+    </style>
+    <script src="//js.arcgis.com/3.11/"></script>
+    <script>
+    var map;
+    require([
+        "esri/map", "dojo/dom", "dojo/_base/lang", "dojo/on", "esri/InfoTemplate", "esri/layers/FeatureLayer",
+        "dojo/parser", "dojo/domReady!"
+    ], function(
+        Map, dom, lang, on, InfoTemplate, FeatureLayer,
+        parser
+    ) {
+        parser.parse();
+        map = new Map("mapDiv", {
+            basemap: "national-geographic",
+            center: [-96.541, 38.34],
+            zoom: 6
+        });
+
+        map.on("load", initOperationalLayer);
+        on(dom.byId("enablePopup"), "click", lang.hitch(this, function() {
+            map.setInfoWindowOnClick(true);
+        }));
+        on(dom.byId("disablePopup"), "click", lang.hitch(this, function() {
+            map.setInfoWindowOnClick(false);
+        }));
+
+        function initOperationalLayer() {
+            var infoTemplate = new InfoTemplate("${state_name}", "Population (2000):  ${pop2000:NumberFormat}");
+            var featureLayer = new FeatureLayer("//sampleserver6.arcgisonline.com/arcgis/rest/services/USA/MapServer/2", {
+                mode: FeatureLayer.MODE_ONDEMAND,
+                outFields: ["*"],
+                infoTemplate: infoTemplate
+            });
+
+            map.addLayer(featureLayer);
+            map.infoWindow.resize(155, 75);
+
+            featureLayer.on("load", function(evt) {
+                // evt.layer.disableMouseEvents();
+                // map.setInfoWindowOnClick(false);
+            });
+        }
+    });
+    </script>
+</head>
+
+<body class="claro">
+    <div id="mapDiv">
+        <input style="position:absolute;top:10px;right:90px;z-index:40;" type="button" value="Enable" id="enablePopup" />
+        <input style="position:absolute;top:10px;right:20px;z-index:40;" type="button" value="Disable" id="disablePopup" />
+    </div>
+</body>
+
+</html>
