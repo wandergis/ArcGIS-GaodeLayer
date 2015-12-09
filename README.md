@@ -6,7 +6,7 @@ ESRI的ArcGIS JavaScript API加载高德在线地图的扩展
 ![示例](http://7xocdq.com1.z0.glb.clouddn.com/image/a/46/9d1e1a84e9a4d79e6235580bbd525.png)
 
 ## 使用方法
-1.  在api引入之前配置dojoConfig
+1  在api引入之前配置dojoConfig
 ```
     <script type="text/javascript">
         var dojoConfig = {
@@ -19,7 +19,7 @@ ESRI的ArcGIS JavaScript API加载高德在线地图的扩展
         };
     </script>
 ```
-2. 然后在代码中可以如下方式构造layer
+2 然后在代码中可以如下方式构造layer
 ```
      require(["esri/map", "extLayers/gaodeLayer", "dojo/domReady!"], function (Map, gaodeLayer) {
             var map = new Map("map", {
